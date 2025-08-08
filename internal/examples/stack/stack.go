@@ -5,7 +5,7 @@ import "fmt"
 // Node shape definition
 type Node[T any] struct {
 	Value T
-	Previous *Node[T]
+	previous *Node[T]
 }
 
 
@@ -19,38 +19,38 @@ type Stacker[T any] interface {
 
 
 type Stack[T any] struct {
-	Head *Node[T]
+	head *Node[T]
 	size int32
 }
 
 
 func (s *Stack[T]) Peek() (T, error) {
-	if s.Head == nil {
+	if s.head == nil {
 		var zero T
 		return zero, fmt.Errorf("head is not set")
 	}
-	return s.Head.Value, nil
+	return s.head.Value, nil
 }
 
 func (s *Stack[T]) Push(value T) {
 
 	s.size++;
 
-	s.Head = &Node[T]{
+	s.head = &Node[T]{
 		Value: value,
-		Previous: s.Head,
+		previous: s.head,
 	}
 }
 
 func (s *Stack[T]) Pop() (T, error) {
-	if s.Head == nil {
+	if s.head == nil {
 		var zero T
 		return zero, fmt.Errorf("you cannot pop from an empty stack")
 	}
 
 	s.size--;
-	previous := s.Head
-	s.Head = s.Head.Previous
+	previous := s.head
+	s.head = s.head.previous
 	return previous.Value, nil
 
 }
@@ -61,7 +61,7 @@ func (s *Stack[T]) Size() int32 {
 
 func NewStack[T any]() Stacker[T] {
 	return &Stack[T]{
-		Head: nil,
+		head: nil,
 		size: 0,
 	}
 }

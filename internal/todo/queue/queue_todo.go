@@ -2,7 +2,7 @@ package queue_todo
 
 type Node[T any] struct {
 	Value T
-	Next *Node[T]
+	next *Node[T]
 }
 
 type Queuer[T any] interface {
@@ -14,16 +14,16 @@ type Queuer[T any] interface {
 
 
 type Queue[T any] struct {
-	Head *Node[T]
-	Tail *Node[T]
+	head *Node[T]
+	tail *Node[T]
 	size int32
 }
 
 
 func NewQueue[T any]() Queuer[T]{
 	return &Queue[T]{
-		Head: nil,
-		Tail: nil,
+		head: nil,
+		tail: nil,
 		size: 0,
 	}
 }

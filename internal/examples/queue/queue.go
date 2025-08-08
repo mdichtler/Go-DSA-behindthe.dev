@@ -5,7 +5,7 @@ import "fmt"
 
 type Node[T any] struct {
 	Value T
-	Next *Node[T]
+	next *Node[T]
 }
 
 type Queuer[T any] interface {
@@ -17,16 +17,16 @@ type Queuer[T any] interface {
 
 
 type Queue[T any] struct {
-	Head *Node[T]
-	Tail *Node[T]
+	head *Node[T]
+	tail *Node[T]
 	size int32
 }
 
 
 func NewQueue[T any]() Queuer[T]{
 	return &Queue[T]{
-		Head: nil,
-		Tail: nil,
+		head: nil,
+		tail: nil,
 		size: 0,
 	}
 }
@@ -36,23 +36,23 @@ func (qs *Queue[T]) Enqueue(val T) {
 	qs.size++;
 	node := &Node[T]{Value: val}
 	// if head doesn't exist, assume no tail either
-	if qs.Head == nil {
-		qs.Tail = node
-		qs.Head = node
+	if qs.head == nil {
+		qs.tail = node
+		qs.head = node
 		return
 	}
 
 	// add to the tail
 	// set pointer of current tail to our node
-	qs.Tail.Next = node
+	qs.tail.next = node
 
 	// set new tail of the current node
-	qs.Tail = node
+	qs.tail = node
 
 }
 
 func (qs *Queue[T]) Dequeue() (T, error) {
-	if qs.Head == nil {
+	if qs.head == nil {
 		// queue is empty
 		var zero T
 		return zero, fmt.Errorf("Queue is empty")
@@ -60,11 +60,11 @@ func (qs *Queue[T]) Dequeue() (T, error) {
 
 	// decrement size only after validating queue is not empty
 	qs.size--
-	curr := qs.Head
-	qs.Head = qs.Head.Next
+	curr := qs.head
+	qs.head = qs.head.next
 	
-	if qs.Head == nil {
-		qs.Tail = nil
+	if qs.head == nil {
+		qs.tail = nil
 	}
 
 	return  curr.Value, nil
@@ -76,9 +76,9 @@ func (qs *Queue[T]) Size() int32 {
 }
 
 func (qs *Queue[T]) Peek() (T, error) {
-	if qs.Head == nil {
+	if qs.head == nil {
 		var zero T
 		return zero, fmt.Errorf("Queue is empty")
 	}
-	return qs.Head.Value, nil
+	return qs.head.Value, nil
 }

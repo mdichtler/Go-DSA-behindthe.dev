@@ -2,7 +2,7 @@ package stack_todo
 
 type Node[T any] struct {
 	Value T
-	Previous *Node[T]
+	previous *Node[T]
 }
 
 type Stack[T any] interface {
@@ -14,7 +14,7 @@ type Stack[T any] interface {
 
 
 type NodeStack[T any] struct {
-	Head *Node[T]
+	head *Node[T]
 	size int32
 }
 
