@@ -10,7 +10,7 @@ type Node[T any] struct {
 
 
 // Interface providing list of functions
-type Stack[T any] interface {
+type Stacker[T any] interface {
 	Peek() (T, error)
 	Push(value T)
 	Pop() (T, error)
@@ -18,13 +18,13 @@ type Stack[T any] interface {
 }
 
 
-type NodeStack[T any] struct {
+type Stack[T any] struct {
 	Head *Node[T]
 	size int32
 }
 
 
-func (s *NodeStack[T]) Peek() (T, error) {
+func (s *Stack[T]) Peek() (T, error) {
 	if s.Head == nil {
 		var zero T
 		return zero, fmt.Errorf("head is not set")
@@ -32,7 +32,7 @@ func (s *NodeStack[T]) Peek() (T, error) {
 	return s.Head.Value, nil
 }
 
-func (s *NodeStack[T]) Push(value T) {
+func (s *Stack[T]) Push(value T) {
 
 	s.size++;
 
@@ -42,7 +42,7 @@ func (s *NodeStack[T]) Push(value T) {
 	}
 }
 
-func (s *NodeStack[T]) Pop() (T, error) {
+func (s *Stack[T]) Pop() (T, error) {
 	if s.Head == nil {
 		var zero T
 		return zero, fmt.Errorf("you cannot pop from an empty stack")
@@ -55,12 +55,12 @@ func (s *NodeStack[T]) Pop() (T, error) {
 
 }
 
-func (s *NodeStack[T]) Size() int32 {
+func (s *Stack[T]) Size() int32 {
 	return s.size
 }
 
-func NewStack[T any]() Stack[T] {
-	return &NodeStack[T]{
+func NewStack[T any]() Stacker[T] {
+	return &Stack[T]{
 		Head: nil,
 		size: 0,
 	}
