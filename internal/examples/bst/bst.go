@@ -2,7 +2,7 @@ package bst
 
 import (
 	"fmt"
-
+	"github.com/mdichtler/Go-DSA-behindthe.dev/internal/examples/queue"
 	"golang.org/x/exp/constraints"
 
 )
@@ -25,6 +25,7 @@ type BSTer[T constraints.Ordered] interface {
 	Search(value T) (*Node[T], error)
 	Delete(value T) error
 	InOrder() []T
+	BFS() []T
 }
 
 func NewBST[T constraints.Ordered]() *BST[T] {
@@ -195,4 +196,35 @@ func (bst *BST[T]) InOrder() []T {
 	result := make([]T, 0)
 	inOrderHelper(bst.root, &result)
 	return  result
+}
+
+func (bst *BST[T]) BFS() []T {
+	result := make([]T, 0)
+	q := queue.NewQueue[*Node[T]]()
+
+	if bst.root == nil {
+		return result
+	}
+
+	q.Enqueue(bst.root)
+
+	for q.Size() != 0 {
+		curr, err := q.Dequeue()
+		if err != nil {
+			// ran out of items in queue
+			return result
+		}
+
+		result = append(result, curr.Value)
+
+		if curr.left != nil {
+			q.Enqueue(curr.left)
+		}
+
+		if curr.right != nil {
+			q.Enqueue(curr.right)
+		}
+
+	}
+	return result
 }
