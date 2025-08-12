@@ -26,6 +26,7 @@ type BSTer[T constraints.Ordered] interface {
 	Delete(value T) error
 	InOrder() []T
 	BFS() []T
+	DFS() []T
 }
 
 func NewBST[T constraints.Ordered]() *BST[T] {
@@ -226,5 +227,22 @@ func (bst *BST[T]) BFS() []T {
 		}
 
 	}
+	return result
+}
+
+func (bst *BST[T]) preOrderHelper(curr *Node[T], result *[]T) {
+	
+	if curr == nil {
+		return
+	}
+
+	*result = append(*result, curr.Value)
+	bst.preOrderHelper(curr.left, result)
+	bst.preOrderHelper(curr.right, result)
+}
+
+func (bst *BST[T]) PreOrder() []T {
+	result := make([]T, 0)
+	bst.preOrderHelper(bst.root, &result)
 	return result
 }
